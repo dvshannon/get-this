@@ -2,6 +2,7 @@ import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import axios from "axios"
 import prettyBytes from "pretty-bytes"
+import setupEditors from "./setupEditor"
 
 const queryParamsContainer = document.querySelector('[data-query-params]')
 const requestHeadersContainer = document.querySelector('[data-request-headers]')
@@ -36,6 +37,8 @@ axios.interceptors.response.use(updateEndTime, e => {
     return Promise.reject(updateEndTime(e.response))
 })
 
+const { responseEditor, updateResponseEditor } = setupEditors()
+
 form.addEventListener('submit', e => {
     e.preventDefault()
 
@@ -50,7 +53,7 @@ form.addEventListener('submit', e => {
         // test response https://jsonplaceholder.typicode.com/todos/1
         document.querySelector('[data-response-section]').classList.remove('d-none')
         updateResponseDetails(response)
-        // updateResponseEditor(response.data)
+        updateResponseEditor(response.data)
         updateResponseHeaders(response.headers)
         console.log(response)
     })
